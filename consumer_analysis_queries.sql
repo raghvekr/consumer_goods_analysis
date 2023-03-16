@@ -1,9 +1,12 @@
--- Query1 --
+    -- Query1 --
+
 
 select distinct market from gdb023.dim_customer
 where customer = 'Atliq Exclusive' and region = 'APAC' ;
 
--- Query 2 -- 
+
+    -- Query 2 --
+
 
 select 
  SUM(CASE 
@@ -28,13 +31,18 @@ round( (SUM(CASE
 from 
  (select distinct product_code, fiscal_year from gdb023.fact_sales_monthly) as sub;
  
- -- Query3 --
+ 
+    -- Query3 --
+    
+    
 select segment, count(distinct product) as product_count from gdb023.dim_product
 group by segment
 order by product_count desc;
 
 
--- Query4 --
+    -- Query4 --
+    
+    
 SELECT * FROM gdb023.dim_product;
 
 With CTE1 as 
@@ -56,7 +64,10 @@ from CTE1 join CTE2
 ON CTE1.segment = CTE2.segment
 ORDER BY difference DESC;
 
--- Query 5 --
+
+    -- Query 5 --
+    
+    
 
 SELECT p.product_code AS product_code, p.product AS product, 
        ROUND(fact_manufacturing_cost.manufacturing_cost,2) AS manufacturing_cost
@@ -67,7 +78,10 @@ WHERE fact_manufacturing_cost.manufacturing_cost = (SELECT MIN(manufacturing_cos
       OR fact_manufacturing_cost.manufacturing_cost =  (SELECT MAX(manufacturing_cost) FROM fact_manufacturing_cost)
 ORDER BY manufacturing_cost DESC;
 
--- Query6 --
+
+    -- Query6 --
+  
+  
 select  d.customer_code, c.customer , round(avg(d.pre_invoice_discount_pct),2) as average_discount_percentage
 from gdb023.dim_customer c
 join gdb023.fact_pre_invoice_deductions d on
@@ -77,7 +91,9 @@ GROUP BY c.customer, d.customer_code
 ORDER BY average_discount_percentage DESC
 LIMIT 5;
 
--- Query7 --
+
+     -- Query7 --
+
 
 select monthname(s.date) as Month, year(s.date) as Year, 
 round(sum(g.gross_price * s.sold_quantity) / 1000000, 2) as gross_sales_amt_mln
@@ -89,7 +105,9 @@ where c.customer = 'Atliq Exclusive'
 group by Month , Year 
 order by gross_sales_amt_mln desc;
 
--- Query8 --
+
+    -- Query8 --
+
 
 SELECT 
 CASE 
@@ -104,7 +122,9 @@ WHERE s.fiscal_year = '2020'
 GROUP BY quarter
 ORDER BY quarter;
 
--- Query9 --
+
+    -- Query9 --
+
 
 with CTE1 as 
 ( select c.channel as channel , round(sum(s.sold_quantity * g.gross_price)/1000000,2) as gross_sales_in_million 
@@ -123,7 +143,9 @@ join CTE2;
 
 
 
--- Query10 --
+    -- Query10 --
+
+
 
 With CTE1 as
 (select p.product_code , p.division, p.product, 
